@@ -45,7 +45,7 @@ def main(results_folder):
         mask_obj.SetDirection(img_obj.GetDirection())
         mask_obj.SetSpacing(img_obj.GetSpacing())
 
-        agatston_score, volume_score = score(img_obj,mask_obj,kV=120,min_size=1)
+        agatston_score, volume_score, median_hu = score(img_obj,mask_obj,kV=120,min_size=1)
         myitem = dict(
             img_file=img_file,
             mask_file=mask_file,
@@ -54,9 +54,10 @@ def main(results_folder):
             dist_mm=dist_mm,
             agatston_score=agatston_score,
             volume_score=volume_score,
+            median_hu=median_hu,
         )
         mylist.append(myitem)
-        print(agatston_score, volume_score)
+        print(f"agatston_score: {agatston_score}, volume_score: {volume_score}, median_hu: {median_hu}")
         print(f'spacing {spacing} dist {dist_z} voxels {dist_mm} mm')
         pd.DataFrame(mylist).to_csv("scores.csv",index=False)
 

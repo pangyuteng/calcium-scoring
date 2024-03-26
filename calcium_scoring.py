@@ -1,31 +1,51 @@
 
 """
+reference
 
-Calculate the calcium score via the traditional Agatston scoring technique, as outlined in the 
-[original paper](10.1016/0735-1097(90)90282-T). Energy (`kV`) specific `threshold`s are determined based on 
-previous [publications](https://doi.org/10.1093/ehjci/jey019). 
+Calculate the calcium score via the traditional Agatston scoring technique
 
-#### Inputs
-- `vol`: input volume containing just the region of interest
-- `spacing`: known pixel/voxel spacing (can be an array of `Unitful.Quantity`)
-- `alg::Agatston`: Agatston scoring algorithm `Agatston()`
-- kwargs:
-  - `kV=120`: energy of the input CT scan image
-  - `min_size=1`: minimum connected component size (see [`label_components`](https://github.com/JuliaImages/Images.jl))
-
-#### Returns
-- `agatston_score`: total Agatston score
-- `volume_score`: total calcium volume via Agatston scoring (can be a `Unitful.Quantity`)
+https://github.com/MolloiLab/CalciumScoring.jl/blob/master/src/agatston.jl
 
 
-#### References
-[Quantification of coronary artery calcium using ultrafast computed tomography](https://doi.org/10.1016/0735-1097(90)90282-t)
+https://doi.org/10.1093/ehjci/jey019
+https://doi.org/10.1016/0735-1097(90)90282-t
+https://doi.org/10.1093/ehjci/jey019
 
-[Ultra-low-dose coronary artery calcium scoring using novel scoring thresholds for low tube voltage protocols—a pilot study ](https://doi.org/10.1093/ehjci/jey019)
+Ulzheimer, S., & Kalender, W. A. (2003). 
+Assessment of calcium scoring performance in cardiac computed tomography. 
+European radiology, 13, 484-497.
+https://pubmed.ncbi.nlm.nih.gov/12594550/
+
+
+
+A score for each region of interest was
+  calculated by multiplying the density score and the area . A
+  total coronary calcium score was determined by adding up
+  each of these scores for all 20 slices
+    ...
+  To evaluate the limitations of scanning only the proximal coronary arteries,
+  58 subjects had studies using 40 rather than 20 slices (120
+  versus 60 mm), requiring an additional scan and breath hold
+  for the distal segments .
+
+Scoring methods and cutoff values differed widely. 
+All the studies used the Agatston scoring method. However, 1 study
+used only 20 slices of the 6-mm slices to obtain the score, 
+and another used 20 slices of the 3-mm slices, 
+whereas the others used 40 slices of the 3-mm slice technique.
+
+https://www.sciencedirect.com/science/article/pii/S0002914999009066
+resample to 3mm?
+
+https://ajronline.org/doi/10.2214/ajr.176.5.1761295
+
+https://www.sciencedirect.com/science/article/pii/S0735109702029753#BIB15
+
 
 """
 
 import sys
+import pandas as pd
 import numpy as np
 import imageio
 import SimpleITK as sitk
@@ -120,7 +140,7 @@ def _weight_thresholds(kV, max_intensity):
     return weight
 
 
-def score(img_obj,mask_obj,kV=120,min_size=1):
+def score(img_obj,mask_obj,kV=120,min_size_mm2=1,slice_spacing_mm=3.0,max_slice=20):
     
     if kV not in [70, 80, 100, 120, 135]:
         raise ValueError("kV value not supported!")
@@ -129,7 +149,7 @@ def score(img_obj,mask_obj,kV=120,min_size=1):
     # so we are only using 40 slices.
 
     og_spacing = list(img_obj.GetSpacing())
-    new_spacing = [og_spacing[0],og_spacing[1],3.0]
+    new_spacing = [og_spacing[0],og_spacing[1],slice_spacing_mm]
     img_obj = resample_img(img_obj, out_spacing=new_spacing, is_label=False)
     mask_obj = resample_img(mask_obj, out_spacing=new_spacing, is_label=True)
     
@@ -139,24 +159,25 @@ def score(img_obj,mask_obj,kV=120,min_size=1):
     spacing = np.roll(spacing,1) # now z is at 0th index.
 
     threshold = np.round(378 * np.exp(-0.009 * kV))
-    area = spacing[1] * spacing[2]
-    min_size_pixels = np.round(min_size / area) # respecting the original implementation.
+    pixel_area = spacing[1] * spacing[2] # mm^2
+    min_size_pixels = np.round(min_size_mm2 / pixel_area) # respecting the original implementation.
 
-    agatston_score = 0
-    volume_score = 0
-    
-    vol = img.copy()
-    vol[mask==0]=-1000 # ct
-    for z in range(vol.shape[0]):
-        zslice = vol[z,:,:].squeeze()
+    mylist = []
+    volume = img.copy()
+    volume[mask==0]=-1000 # ct
+    for z in range(volume.shape[0]):
+        
+        slice_agatston_score = 0
+        slice_volume_score = 0
+
+        zslice = volume[z,:,:].squeeze()
         thresholded_slice = zslice > threshold
         max_intensity = np.max(zslice)
         if max_intensity < threshold:
             continue
         label_img = label(thresholded_slice)
         regions = regionprops(label_img)
-        #print(z,len(regions))
-        #imageio.imwrite(f'{z}.png', (label_img/np.max(label_img)*255).astype(np.uint8) )
+
         for r in regions:
             region_mask = label_img == r.label
             num_label_idxs = np.sum(region_mask)
@@ -165,11 +186,29 @@ def score(img_obj,mask_obj,kV=120,min_size=1):
             intensities = zslice[region_mask==1]
             max_intensity = np.max(intensities)
             weight = _weight_thresholds(kV, max_intensity)
-            slice_score = num_label_idxs * area * np.min([weight, 4])
-            agatston_score += slice_score
-            volume_score += num_label_idxs * np.prod(spacing)
+            slice_score = num_label_idxs * pixel_area * np.min([weight, 4])
+            slice_agatston_score += slice_score
+            slice_volume_score += num_label_idxs * np.prod(spacing)
+        mylist.append(dict(
+            slice_idx=z,
+            agatston_score=slice_agatston_score,
+            volume_score=slice_volume_score,
+        ))
 
-    return agatston_score, volume_score
+    # NOTE: max_slice was mentioned by several papers, likely set as part of image acquisition.
+    # thus we are filtering the slices by higer agatston scores
+    df = pd.DataFrame(mylist)
+    df.sort_values(['agatston_score'], axis=0, ascending=False,inplace=True)
+    df = df.reset_index()
+    if len(df) > max_slice:
+        df = df.loc[:max_slice,:]
+
+    agatston_score = df.agatston_score.sum()
+    volume_score = df.volume_score.sum()
+    # NOTE: median_hu can be used to determine if series contains contrast, blood is 40HU
+    print(volume[mask==1].shape)
+    median_hu = np.median(volume[mask==1])
+    return agatston_score, volume_score, median_hu
 
 if __name__ == "__main__":
     img_file = sys.argv[1]
@@ -181,7 +220,7 @@ if __name__ == "__main__":
     mask = mask.astype(np.int16)
     x,y,z=np.where(mask==1)
     
-    print(len(np.unique(x)))
+    print('slice count',len(np.unique(x)))
 
     # locate z location, resample so you get 20 slices?
 
@@ -189,37 +228,11 @@ if __name__ == "__main__":
     mask_obj.SetOrigin(img_obj.GetOrigin())
     mask_obj.SetDirection(img_obj.GetDirection())
     mask_obj.SetSpacing(img_obj.GetSpacing())
-    agatston_score, volume_score = score(img_obj,mask_obj)
-    print(f"agatston_score: {agatston_score}, volume_score: {volume_score}")
+    agatston_score, volume_score, median_hu = score(img_obj,mask_obj)
+    print(f"agatston_score: {agatston_score}, volume_score: {volume_score}, median_hu: {median_hu}")
 
 
 """
-
-A score for each region of interest was
-  calculated by multiplying the density score and the area . A
-  total coronary calcium score was determined by adding up
-  each of these scores for all 20 slices
-    ...
-  To evaluate the limitations of scanning only the proximal coronary arteries,
-  58 subjects had studies using 40 rather than 20 slices (120
-  versus 60 mm), requiring an additional scan and breath hold
-  for the distal segments .
-
-Scoring methods and cutoff values differed widely. 
-All the studies used the Agatston scoring method. However, 1 study
-used only 20 slices of the 6-mm slices to obtain the score, 
-and another used 20 slices of the 3-mm slices, 
-whereas the others used 40 slices of the 3-mm slice technique.
-
-https://www.sciencedirect.com/science/article/pii/S0002914999009066
-resample to 3mm?
-
-https://ajronline.org/doi/10.2214/ajr.176.5.1761295
-
-
-https://www.sciencedirect.com/science/article/pii/S0735109702029753#BIB15
-
-
 
 python calcium_scoring.py ct.nii.gz segmentations.nii.gz
 
