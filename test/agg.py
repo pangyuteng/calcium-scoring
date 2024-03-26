@@ -6,6 +6,8 @@ import SimpleITK as sitk
 import numpy as np
 import pandas as pd
 
+THIS_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(os.path.dirname(THIS_DIR))
 from calcium_scoring import score
 
 def main(results_folder):
@@ -45,7 +47,7 @@ def main(results_folder):
         mask_obj.SetDirection(img_obj.GetDirection())
         mask_obj.SetSpacing(img_obj.GetSpacing())
 
-        agatston_score, volume_score, median_hu = score(img_obj,mask_obj,kV=120,min_size=1)
+        agatston_score, volume_score, median_hu, mask_volume = score(img_obj,mask_obj,kV=120)
         myitem = dict(
             img_file=img_file,
             mask_file=mask_file,
@@ -55,9 +57,10 @@ def main(results_folder):
             agatston_score=agatston_score,
             volume_score=volume_score,
             median_hu=median_hu,
+            mask_volume=mask_volume,
         )
         mylist.append(myitem)
-        print(f"agatston_score: {agatston_score}, volume_score: {volume_score}, median_hu: {median_hu}")
+        print(f"agatston_score: {agatston_score}, volume_score: {volume_score}, median_hu: {median_hu}, mask_volume {mask_volume}")
         print(f'spacing {spacing} dist {dist_z} voxels {dist_mm} mm')
         pd.DataFrame(mylist).to_csv("scores.csv",index=False)
 

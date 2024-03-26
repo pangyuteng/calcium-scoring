@@ -197,18 +197,24 @@ def score(img_obj,mask_obj,kV=120,min_size_mm2=1,slice_spacing_mm=3.0,max_slice=
 
     # NOTE: max_slice was mentioned by several papers, likely set as part of image acquisition.
     # thus we are filtering the slices by higer agatston scores
-    df = pd.DataFrame(mylist)
-    df.sort_values(['agatston_score'], axis=0, ascending=False,inplace=True)
-    df = df.reset_index()
-    if len(df) > max_slice:
-        df = df.loc[:max_slice,:]
+    if len(mylist) > 0:
+        df = pd.DataFrame(mylist)
+        df.sort_values(['agatston_score'], axis=0, ascending=False,inplace=True)
+        df = df.reset_index()
+        if len(df) > max_slice:
+            df = df.loc[:max_slice,:]
 
-    agatston_score = df.agatston_score.sum()
-    volume_score = df.volume_score.sum()
+        agatston_score = df.agatston_score.sum()
+        volume_score = df.volume_score.sum()
+    else:
+        agatston_score = 0
+        volume_score = 0
+
     # NOTE: median_hu can be used to determine if series contains contrast, blood is 40HU
     print(volume[mask==1].shape)
     median_hu = np.median(volume[mask==1])
-    return agatston_score, volume_score, median_hu
+    mask_volume = np.sum(mask==1) * np.prod(spacing)
+    return agatston_score, volume_score, median_hu, mask_volume
 
 if __name__ == "__main__":
     img_file = sys.argv[1]
@@ -228,8 +234,8 @@ if __name__ == "__main__":
     mask_obj.SetOrigin(img_obj.GetOrigin())
     mask_obj.SetDirection(img_obj.GetDirection())
     mask_obj.SetSpacing(img_obj.GetSpacing())
-    agatston_score, volume_score, median_hu = score(img_obj,mask_obj)
-    print(f"agatston_score: {agatston_score}, volume_score: {volume_score}, median_hu: {median_hu}")
+    agatston_score, volume_score, median_hu, mask_volume = score(img_obj,mask_obj)
+    print(f"agatston_score: {agatston_score}, volume_score: {volume_score}, median_hu: {median_hu}, mask_volume {mask_volume}")
 
 
 """
