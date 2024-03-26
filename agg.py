@@ -49,6 +49,7 @@ def main(results_folder):
         myitem = dict(
             img_file=img_file,
             mask_file=mask_file,
+            spacing=spacing,
             dist_z=dist_z,
             dist_mm=dist_mm,
             agatston_score=agatston_score,
