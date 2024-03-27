@@ -72,6 +72,10 @@ def main(results_folder):
     if not os.path.exists(csv_file):
         gen_csv(results_folder,csv_file)
     df = pd.read_csv(csv_file)
+    plt.hist(df.agatston_score)
+    plt.grid(True)
+    plt.savefig('agatston_score_raw.png')
+    plt.close()
     df = df[(df.median_hu<60)&(df.mask_volume>100000)] # ??
     plt.hist(df.agatston_score,bins=np.arange(0,10000,100))
     plt.grid(True)
