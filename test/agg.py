@@ -5,12 +5,13 @@ import pathlib
 import SimpleITK as sitk
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.dirname(THIS_DIR))
 from calcium_scoring import score
 
-def main(results_folder):
+def gen_csv(results_folder,csv_file):
     file_list = [str(x) for x in pathlib.Path(results_folder).rglob("*segmentations.nii.gz")]
     print(len(file_list))
     mylist = []
@@ -62,11 +63,23 @@ def main(results_folder):
         mylist.append(myitem)
         print(f"agatston_score: {agatston_score}, volume_score: {volume_score}, median_hu: {median_hu}, mask_volume {mask_volume}")
         print(f'spacing {spacing} dist {dist_z} voxels {dist_mm} mm')
-        pd.DataFrame(mylist).to_csv("scores.csv",index=False)
+        pd.DataFrame(mylist).to_csv(csv_file,index=False)
 
-    pd.DataFrame(mylist).to_csv("scores.csv",index=False)
+    pd.DataFrame(mylist).to_csv(csv_file,index=False)
+
+def main(results_folder):
+    csv_file = "scores.csv"
+    if not os.path.exists(csv_file):
+        gen_csv(results_folder,csv_file)
+    df = pd.read_csv(csv_file)
+    df = df[(df.median_hu<60)&(df.mask_volume>100000)] # ??
+    plt.hist(df.agatston_score,bins=np.arange(0,10000,1000))
+    plt.grid(True)
+    plt.savefig('agatston_score.png')
+    
 
 if __name__ == "__main__":
+
     results_folder = sys.argv[1]
     main(results_folder)
 
