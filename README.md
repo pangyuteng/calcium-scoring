@@ -1,12 +1,15 @@
 
 ```
 
-python code for calcium scoring ported from 
+ref
 
-https://github.com/MolloiLab/CalciumScoring.jl
+python code for calcium scoring ported from https://github.com/MolloiLab/CalciumScoring.jl
+
+ref https://pubmed.ncbi.nlm.nih.gov/29432592
 
 
-```
+
+additional refs
 
 J Am Coll Cardiol. 1990 Mar 15;15(4):827-32. doi: 10.1016/0735-1097(90)90282-t.
 Quantification of coronary artery calcium using ultrafast computed tomography
@@ -24,3 +27,4 @@ Coronary artery calcium score: current status
 Neves et al
 https://pubmed.ncbi.nlm.nih.gov/28670030/
 
+```

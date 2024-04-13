@@ -140,8 +140,8 @@ def _weight_thresholds(kV, max_intensity):
     return weight
 
 
-def score(img_obj,mask_obj,kV=120,min_size_mm2=1,slice_spacing_mm=3.0,max_slice=20):
-    
+def score(img_obj,mask_obj,kV=120,min_size_mm2=1,slice_spacing_mm=3.0,max_slice=None):
+
     if kV not in [70, 80, 100, 120, 135]:
         raise ValueError("kV value not supported!")
 
@@ -201,7 +201,7 @@ def score(img_obj,mask_obj,kV=120,min_size_mm2=1,slice_spacing_mm=3.0,max_slice=
         df = pd.DataFrame(mylist)
         df.sort_values(['agatston_score'], axis=0, ascending=False,inplace=True)
         df = df.reset_index()
-        if len(df) > max_slice:
+        if isinstance(max_slice,int) and len(df) > max_slice:
             df = df.loc[:max_slice,:]
 
         agatston_score = df.agatston_score.sum()
