@@ -5,6 +5,7 @@ import pandas as pd
 import tempfile
 import nibabel as nib
 import SimpleITK as sitk
+import matplotlib.pyplot as plt
 from totalsegmentator.python_api import totalsegmentator
 
 CODE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -75,6 +76,11 @@ if __name__ == "__main__":
     df['case_id']=df['case_id'].apply(lambda x: f'{x}A')
     mdf = df.merge(gt_df,how='left',on=['case_id'])
     mdf = mdf[['case_id','agatston_score','volume_score','total']]
+    mdf.to_csv("merged.csv",index=False)
+    plt.scatter(mdf.total,mdf.agatston_score)
+    plt.grid(True)
+    plt.savefig('scatter.png')
+    plt.close()
 
 """
 
