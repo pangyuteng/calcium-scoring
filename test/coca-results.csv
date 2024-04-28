@@ -187,3 +187,105 @@ RuntimeError: Background workers died. Look for the error message further up! If
 4,0.0,0.0,
 20,0.0,0.0,
 136,798.4986152648926,780.9194755554199,
+131,,,"Traceback (most recent call last):
+  File ""/mnt/hd1/github/calcium-scoring/test/test_cac.py"", line 29, in process
+    totalsegmentator(img_nifti_file, seg_folder,task=""coronary_arteries"")
+  File ""/usr/local/lib/python3.10/dist-packages/totalsegmentator/python_api.py"", line 292, in totalsegmentator
+    seg_img = nnUNet_predict_image(input, output, task_id, model=model, folds=folds,
+  File ""/usr/local/lib/python3.10/dist-packages/totalsegmentator/nnunet.py"", line 391, in nnUNet_predict_image
+    nnUNetv2_predict(tmp_dir, tmp_dir, task_id, model, folds, trainer, tta,
+  File ""/usr/local/lib/python3.10/dist-packages/totalsegmentator/nnunet.py"", line 210, in nnUNetv2_predict
+    predictor.predict_from_files(dir_in, dir_out,
+  File ""/usr/local/lib/python3.10/dist-packages/nnunetv2/inference/predict_from_raw_data.py"", line 249, in predict_from_files
+    return self.predict_from_data_iterator(data_iterator, save_probabilities, num_processes_segmentation_export)
+  File ""/usr/local/lib/python3.10/dist-packages/nnunetv2/inference/predict_from_raw_data.py"", line 342, in predict_from_data_iterator
+    for preprocessed in data_iterator:
+  File ""/usr/local/lib/python3.10/dist-packages/nnunetv2/inference/data_iterators.py"", line 109, in preprocessing_iterator_fromfiles
+    raise RuntimeError('Background workers died. Look for the error message further up! If there is '
+RuntimeError: Background workers died. Look for the error message further up! If there is none then your RAM was full and the worker was killed by the OS. Use fewer workers or get more RAM in that case!
+"
+178,0.0,0.0,
+67,0.0,0.0,
+3,0.0,0.0,
+16,0.0,0.0,
+41,0.0,0.0,
+86,77.96964645385742,83.92152786254883,
+201,0.0,0.0,
+26,0.0,0.0,
+39,,,"Traceback (most recent call last):
+  File ""/mnt/hd1/github/calcium-scoring/test/test_cac.py"", line 29, in process
+    totalsegmentator(img_nifti_file, seg_folder,task=""coronary_arteries"")
+  File ""/usr/local/lib/python3.10/dist-packages/totalsegmentator/python_api.py"", line 292, in totalsegmentator
+    seg_img = nnUNet_predict_image(input, output, task_id, model=model, folds=folds,
+  File ""/usr/local/lib/python3.10/dist-packages/totalsegmentator/nnunet.py"", line 391, in nnUNet_predict_image
+    nnUNetv2_predict(tmp_dir, tmp_dir, task_id, model, folds, trainer, tta,
+  File ""/usr/local/lib/python3.10/dist-packages/totalsegmentator/nnunet.py"", line 210, in nnUNetv2_predict
+    predictor.predict_from_files(dir_in, dir_out,
+  File ""/usr/local/lib/python3.10/dist-packages/nnunetv2/inference/predict_from_raw_data.py"", line 249, in predict_from_files
+    return self.predict_from_data_iterator(data_iterator, save_probabilities, num_processes_segmentation_export)
+  File ""/usr/local/lib/python3.10/dist-packages/nnunetv2/inference/predict_from_raw_data.py"", line 342, in predict_from_data_iterator
+    for preprocessed in data_iterator:
+  File ""/usr/local/lib/python3.10/dist-packages/nnunetv2/inference/data_iterators.py"", line 109, in preprocessing_iterator_fromfiles
+    raise RuntimeError('Background workers died. Look for the error message further up! If there is '
+RuntimeError: Background workers died. Look for the error message further up! If there is none then your RAM was full and the worker was killed by the OS. Use fewer workers or get more RAM in that case!
+"
+62,638.471435546875,483.482666015625,
+53,0.0,0.0,
+119,0.0,0.0,
+152,0.0,0.0,
+87,144.07342272810962,113.74217583798128,
+13,87.83423578599665,83.41092894785294,
+9,0.0,0.0,
+141,0.0,0.0,
+85,0.0,0.0,
+96,0.0,0.0,
+211,0.0,0.0,
+158,0.0,0.0,
+146,0.0,0.0,
+176,0.0,0.0,
+109,0.0,0.0,
+159,0.0,0.0,
+95,17.454307556152344,26.181461334228516,
+68,0.0,0.0,
+72,0.0,0.0,
+89,0.0,0.0,
+169,0.0,0.0,
+153,284.62758839456956,260.0554224900024,
+102,0.0,0.0,
+154,0.0,0.0,
+174,589.0819098429808,695.9971319141268,
+30,0.0,0.0,
+17,0.0,0.0,
+122,0.0,0.0,
+198,0.0,0.0,
+65,194.25682201988366,145.69261651491274,
+175,306.9387855529785,243.12614822387695,
+40,0.0,0.0,
+80,666.773352779929,507.90095317551175,
+191,0.0,0.0,
+49,0.0,0.0,
+163,0.0,0.0,
+60,114.202880859375,114.202880859375,
+27,638.3088302612305,590.6279296875,
+138,364.5712890625,283.135986328125,
+170,0.0,0.0,
+42,0.0,0.0,
+208,345.6783790588379,264.9969062805176,
+8,0.0,0.0,
+203,0.0,0.0,
+24,0.0,0.0,
+190,7.284889221191406,10.92733383178711,
+103,0.0,0.0,
+75,0.0,0.0,
+139,0.0,0.0,
+71,348.34954833984375,313.9536895751953,
+144,0.0,0.0,
+88,0.0,0.0,
+21,0.0,0.0,
+123,624.9500661320193,485.29995024205346,
+105,56.09660339355469,56.09660339355469,
+185,0.0,0.0,
+46,0.0,0.0,
+155,0.0,0.0,
+200,1830.1427459716797,1412.059238433838,
+213,0.0,0.0,
