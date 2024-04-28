@@ -56,21 +56,26 @@ def compute_results(root_folder,output_csv_file):
         )
         mylist.append(myitem)
         print(myitem)
-    df = pd.DataFrame(mylist)
-    df.to_csv(output_csv_file,index=False)
+        df = pd.DataFrame(mylist)
+        df.to_csv(output_csv_file,index=False)
 
 if __name__ == "__main__":
 
     root_folder = sys.argv[1]
     output_csv_file = "coca-results.csv"
+    xls_file = os.path.join(root_folder,"scores.xlsx")
 
     if not os.path.exists(output_csv_file):
         compute_results(root_folder,output_csv_file)
 
-    xls_file = os.path.join(root_folder,"scores.xlsx")
     gt_df = pd.read_excel(xls_file)
+    gt_df['case_id']=gt_df['filename ']
+
     df = pd.read_csv(output_csv_file)
-    
+    df['case_id']=df['case_id'].apply(lambda x: f'{x}A')
+    mdf = df.merge(gt_df,how='left',on=['case_id'])
+    mdf = mdf[['case_id','agatston_score','volume_score','total']]
+
 """
 
 docker run -it --gpus 'device=0' --ipc=host -v /mnt:/mnt wasserth/totalsegmentator:2.0.0 bash

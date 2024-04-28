@@ -1,0 +1,189 @@
+case_id,agatston_score,volume_score,error_msg
+180,538.6875,409.95703125,
+83,112.21885681152344,92.340087890625,
+28,0.0,0.0,
+35,0.0,0.0,
+207,0.0,0.0,
+97,0.0,0.0,
+127,0.0,0.0,
+214,0.0,0.0,
+76,0.0,0.0,
+135,370.887908488653,389.43230391308566,
+59,669.6215057373047,616.9299774169922,
+1,0.0,0.0,
+37,675.5422973632812,537.943359375,
+205,0.0,0.0,
+7,24.2370916903119,18.177818767733925,
+57,180.9131622314453,195.38621520996094,
+212,3600.50537109375,2758.482421875,
+36,0.0,0.0,
+120,0.0,0.0,
+184,0.0,0.0,
+137,0.0,0.0,
+79,769.3545132280105,582.5641145837099,
+69,0.0,0.0,
+32,0.0,0.0,
+140,0.0,0.0,
+81,0.0,0.0,
+161,0.0,0.0,
+150,29.928348541259766,28.353172302246094,
+183,0.0,0.0,
+186,3.0827875854448337,4.6241813781672505,
+101,0.0,0.0,
+121,0.0,0.0,
+74,0.0,0.0,
+179,0.0,0.0,
+209,0.0,0.0,
+111,0.0,0.0,
+145,849.1717529296875,669.9021606445312,
+189,0.0,0.0,
+168,0.0,0.0,
+112,0.0,0.0,
+134,0.0,0.0,
+148,0.0,0.0,
+104,0.0,0.0,
+90,,,"Traceback (most recent call last):
+  File ""/mnt/hd1/github/calcium-scoring/test/test_cac.py"", line 29, in process
+    totalsegmentator(img_nifti_file, seg_folder,task=""coronary_arteries"")
+  File ""/usr/local/lib/python3.10/dist-packages/totalsegmentator/python_api.py"", line 292, in totalsegmentator
+    seg_img = nnUNet_predict_image(input, output, task_id, model=model, folds=folds,
+  File ""/usr/local/lib/python3.10/dist-packages/totalsegmentator/nnunet.py"", line 391, in nnUNet_predict_image
+    nnUNetv2_predict(tmp_dir, tmp_dir, task_id, model, folds, trainer, tta,
+  File ""/usr/local/lib/python3.10/dist-packages/totalsegmentator/nnunet.py"", line 210, in nnUNetv2_predict
+    predictor.predict_from_files(dir_in, dir_out,
+  File ""/usr/local/lib/python3.10/dist-packages/nnunetv2/inference/predict_from_raw_data.py"", line 249, in predict_from_files
+    return self.predict_from_data_iterator(data_iterator, save_probabilities, num_processes_segmentation_export)
+  File ""/usr/local/lib/python3.10/dist-packages/nnunetv2/inference/predict_from_raw_data.py"", line 342, in predict_from_data_iterator
+    for preprocessed in data_iterator:
+  File ""/usr/local/lib/python3.10/dist-packages/nnunetv2/inference/data_iterators.py"", line 109, in preprocessing_iterator_fromfiles
+    raise RuntimeError('Background workers died. Look for the error message further up! If there is '
+RuntimeError: Background workers died. Look for the error message further up! If there is none then your RAM was full and the worker was killed by the OS. Use fewer workers or get more RAM in that case!
+"
+91,0.0,0.0,
+202,0.0,0.0,
+149,0.0,0.0,
+84,0.0,0.0,
+44,0.0,0.0,
+187,0.0,0.0,
+98,0.0,0.0,
+77,0.0,0.0,
+94,0.0,0.0,
+64,860.3051453235366,764.7992419528293,
+204,0.0,0.0,
+172,0.0,0.0,
+10,0.0,0.0,
+18,0.0,0.0,
+117,56.500418647193584,82.68353948369793,
+14,0.0,0.0,
+29,37.324462890625,52.487525939941406,
+118,0.0,0.0,
+114,0.0,0.0,
+54,0.0,0.0,
+151,0.0,0.0,
+107,46.395538330078125,69.59330749511719,
+116,0.0,0.0,
+82,151.3671875,144.6533203125,
+55,0.0,0.0,
+142,0.0,0.0,
+25,0.0,0.0,
+99,0.0,0.0,
+206,494.706787109375,371.03009033203125,
+143,,,"Traceback (most recent call last):
+  File ""/mnt/hd1/github/calcium-scoring/test/test_cac.py"", line 29, in process
+    totalsegmentator(img_nifti_file, seg_folder,task=""coronary_arteries"")
+  File ""/usr/local/lib/python3.10/dist-packages/totalsegmentator/python_api.py"", line 292, in totalsegmentator
+    seg_img = nnUNet_predict_image(input, output, task_id, model=model, folds=folds,
+  File ""/usr/local/lib/python3.10/dist-packages/totalsegmentator/nnunet.py"", line 391, in nnUNet_predict_image
+    nnUNetv2_predict(tmp_dir, tmp_dir, task_id, model, folds, trainer, tta,
+  File ""/usr/local/lib/python3.10/dist-packages/totalsegmentator/nnunet.py"", line 210, in nnUNetv2_predict
+    predictor.predict_from_files(dir_in, dir_out,
+  File ""/usr/local/lib/python3.10/dist-packages/nnunetv2/inference/predict_from_raw_data.py"", line 249, in predict_from_files
+    return self.predict_from_data_iterator(data_iterator, save_probabilities, num_processes_segmentation_export)
+  File ""/usr/local/lib/python3.10/dist-packages/nnunetv2/inference/predict_from_raw_data.py"", line 342, in predict_from_data_iterator
+    for preprocessed in data_iterator:
+  File ""/usr/local/lib/python3.10/dist-packages/nnunetv2/inference/data_iterators.py"", line 109, in preprocessing_iterator_fromfiles
+    raise RuntimeError('Background workers died. Look for the error message further up! If there is '
+RuntimeError: Background workers died. Look for the error message further up! If there is none then your RAM was full and the worker was killed by the OS. Use fewer workers or get more RAM in that case!
+"
+128,2138.0591529807593,1606.4440832974783,
+33,,,"Traceback (most recent call last):
+  File ""/mnt/hd1/github/calcium-scoring/test/test_cac.py"", line 29, in process
+    totalsegmentator(img_nifti_file, seg_folder,task=""coronary_arteries"")
+  File ""/usr/local/lib/python3.10/dist-packages/totalsegmentator/python_api.py"", line 292, in totalsegmentator
+    seg_img = nnUNet_predict_image(input, output, task_id, model=model, folds=folds,
+  File ""/usr/local/lib/python3.10/dist-packages/totalsegmentator/nnunet.py"", line 391, in nnUNet_predict_image
+    nnUNetv2_predict(tmp_dir, tmp_dir, task_id, model, folds, trainer, tta,
+  File ""/usr/local/lib/python3.10/dist-packages/totalsegmentator/nnunet.py"", line 210, in nnUNetv2_predict
+    predictor.predict_from_files(dir_in, dir_out,
+  File ""/usr/local/lib/python3.10/dist-packages/nnunetv2/inference/predict_from_raw_data.py"", line 249, in predict_from_files
+    return self.predict_from_data_iterator(data_iterator, save_probabilities, num_processes_segmentation_export)
+  File ""/usr/local/lib/python3.10/dist-packages/nnunetv2/inference/predict_from_raw_data.py"", line 342, in predict_from_data_iterator
+    for preprocessed in data_iterator:
+  File ""/usr/local/lib/python3.10/dist-packages/nnunetv2/inference/data_iterators.py"", line 109, in preprocessing_iterator_fromfiles
+    raise RuntimeError('Background workers died. Look for the error message further up! If there is '
+RuntimeError: Background workers died. Look for the error message further up! If there is none then your RAM was full and the worker was killed by the OS. Use fewer workers or get more RAM in that case!
+"
+63,0.0,0.0,
+193,0.0,0.0,
+15,0.0,0.0,
+12,0.0,0.0,
+61,1187.3356323242188,965.6830444335938,
+115,0.0,0.0,
+11,0.0,0.0,
+197,0.0,0.0,
+173,0.0,0.0,
+192,0.0,0.0,
+166,0.0,0.0,
+58,0.0,0.0,
+125,0.0,0.0,
+66,0.0,0.0,
+78,0.0,0.0,
+194,0.0,0.0,
+92,0.0,0.0,
+2,770.8663940429688,716.78466796875,
+164,0.0,0.0,
+126,0.0,0.0,
+51,0.0,0.0,
+156,0.0,0.0,
+132,0.0,0.0,
+124,0.0,0.0,
+19,341.39760971069336,325.44445037841797,
+177,0.0,0.0,
+70,0.0,0.0,
+22,0.0,0.0,
+47,0.0,0.0,
+108,0.0,0.0,
+48,0.0,0.0,
+34,0.0,0.0,
+113,0.0,0.0,
+188,1726.72119140625,1376.8512725830078,
+167,0.0,0.0,
+45,0.0,0.0,
+199,0.0,0.0,
+110,0.0,0.0,
+56,0.0,0.0,
+195,0.0,0.0,
+181,0.0,0.0,
+93,103.01618957519531,103.01618957519531,
+129,0.0,0.0,
+210,489.84322357177734,370.5549774169922,
+52,0.0,0.0,
+160,0.0,0.0,
+100,0.0,0.0,
+162,0.0,0.0,
+106,0.0,0.0,
+182,0.0,0.0,
+23,2296.884548468715,2043.8545683214356,
+130,0.0,0.0,
+5,0.0,0.0,
+171,0.0,0.0,
+133,0.0,0.0,
+157,12.980175018310547,12.980175018310547,
+147,0.0,0.0,
+43,34.08096694946289,43.81838607788086,
+31,0.0,0.0,
+6,0.0,0.0,
+165,0.0,0.0,
+4,0.0,0.0,
+20,0.0,0.0,
+136,798.4986152648926,780.9194755554199,
